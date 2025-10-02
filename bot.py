@@ -230,7 +230,7 @@ async def upload_file(client: Client, chat_id: int, file_path: str, status_messa
                 chat_id=chat_id,
                 document=file_path,
                 caption=f"**{file_name}**\n\n{media_caption}",
-                thumb=default_thumbnail_path if os.path.exists(default_thumbnail_path) else None,
+                thumb=None,  # no tgcrypto thumbnail check
                 progress=progress,
                 progress_args=(os.path.getsize(file_path),)
             )
@@ -327,7 +327,6 @@ async def handle_cancel(client, callback_query):
     if cancel_code in downloads:
         downloads[cancel_code]["cancelled"] = True
         await callback_query.answer("❌ Cancel requested!")
-        # Optional: update the message immediately
         status_msg = downloads[cancel_code]["status_msg"]
         await status_msg.edit(f"❌ Cancel requested by user", reply_markup=None)
     else:
@@ -383,7 +382,6 @@ async def url_handler(client, message: Message):
         "uploading": False
     }
 
-    # Start download monitor in background
     asyncio.create_task(monitor_download(cancel_code, client))
 
 # ------------------- Run Bot -------------------
