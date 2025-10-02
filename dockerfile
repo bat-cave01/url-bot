@@ -1,25 +1,27 @@
-FROM python:3.11-slim-bookworm
+FROM python:3.12-slim
 
-WORKDIR /app
-
-# 🔨 Install gcc and build deps for tgcrypto
-RUN apt-get update && apt-get install -y \
-    gcc \
+# Install system dependencies for tgcrypto and other Python packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    gcc \
     libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 🔨 Copy dependencies
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first (for better caching)
 COPY requirements.txt .
 
-# 🔨 Install dependencies from requirements.txt (excluding tgcrypto if you want explicit install)
-RUN pip install --no-cache-dir -r requirements.txt
+# Upgrade pip and install dependencies (including tgcrypto)
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install -r requirements.txt
 
-# 🔨 Install tgcrypto explicitly
-RUN pip install --no-cache-dir tgcrypto
-
-# 🔨 Copy your bot code
+# Copy the rest of the project
 COPY . .
 
-# 🔨 Start the bot
-CMD ["python", "bot.py"]
+# Expose port if you are running Flask/other API
+EXPOSE 8080
+
+# Command to start your bot
+CMD ["python", "main.py"]
