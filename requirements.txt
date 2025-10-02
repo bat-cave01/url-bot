@@ -11,3 +11,4 @@ xattr
 speedtest-cli
 hachoir
 aria2
+tgcrypto
