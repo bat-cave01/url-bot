@@ -43,7 +43,7 @@ def run_flask():
     flask_app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
 
 # ------------------- Paths & Cleanup -------------------
-downloads_path = Path("downloads")
+downloads_path = "/tmp/downloads"
 os.makedirs(downloads_path, exist_ok=True)
 for f in downloads_path.iterdir():
     try:
@@ -63,7 +63,7 @@ aria2_process = subprocess.Popen([
     "--rpc-listen-all=false",
     "--rpc-allow-origin-all",
     "--rpc-listen-port=6806",
-    "--dir=downloads",
+    "--dir=/tmp/downloads",
     "--max-concurrent-downloads=5",
     "--continue=true",
     "--split=5",
