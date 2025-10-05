@@ -32,7 +32,7 @@ ADMIN_ID = int(os.getenv("ADMIN_ID"))
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
 
 # ------------------- Pyrogram & Flask -------------------
-app = Client("url_upload_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+app = Client("url_up_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 flask_app = Flask(__name__)
 
 @flask_app.route("/")
@@ -63,7 +63,7 @@ aria2_process = subprocess.Popen([
     "--enable-rpc",
     "--rpc-listen-all=false",
     "--rpc-allow-origin-all",
-    "--rpc-listen-port=6806",
+    "--rpc-listen-port=6800",
     "--dir=/tmp/downloads",
     "--max-concurrent-downloads=5",
     "--continue=true",
@@ -72,7 +72,7 @@ aria2_process = subprocess.Popen([
     "--min-split-size=1M"
 ])
 import time as t; t.sleep(2)
-aria2 = aria2p.API(aria2p.Client(host="http://localhost", port=6806))
+aria2 = aria2p.API(aria2p.Client(host="http://localhost", port=6800))
 
 # ------------------- Globals -------------------
 downloads = {}  # cancel_code: { "gid": str, "cancelled": False, "file_path": str, "status_msg": Message, "uploading": False }
