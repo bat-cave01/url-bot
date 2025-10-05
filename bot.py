@@ -43,8 +43,9 @@ def run_flask():
     flask_app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
 
 # ------------------- Paths & Cleanup -------------------
-downloads_path = "/tmp/downloads"
-os.makedirs(downloads_path, exist_ok=True)
+downloads_path = Path("/tmp/downloads")
+downloads_path.mkdir(parents=True, exist_ok=True)
+
 for f in downloads_path.iterdir():
     try:
         if f.is_file():
